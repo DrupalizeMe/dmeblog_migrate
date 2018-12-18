@@ -1,0 +1,14 @@
+{
+  "name": "drupal/dmeblog_migrate",
+  "type": "drupal-module",
+  "description": "Migrate Drupalize.Me Blog and Users",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/dmeblog_migrate",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "http://drupal.org/project/issues/dmeblog_migrate",
+    "source": "http://cgit.drupalcode.org/dmeblog_migrate"
+  },
+  "require": { }
+}

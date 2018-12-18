@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Contains dmeblog_migrate.module..
+ */
+
+use Drupal\migrate\Plugin\MigrateSourceInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\migrate\Row;
+use Drupal\migrate\MigrateSkipRowException;
+
+/**
+ * Implements hook_migrate_prepare_row().
+ *
+ * This function will be called once, for every row, in every migration. Which
+ * makes it quite powerful.
+ *
+ * It's also important to use some smart logic in this function to ensure you're
+ * only performing your extra logic when it's really needed. Not doing so has
+ * the potential to really slow things down.
+ *
+ * We recommend at a minimum always checking the $migration->id() value to see
+ * which migration is currently being executed.
+ */
+function dmeblog_migrate_migrate_prepare_row(Row $row, MigrateSourceInterface $source, MigrationInterface $migration) {
+  // This example performs some extra processing when running the
+  // upgrade_d7_field migration. In this case we only want to migrate the fields
+  // that are used by our Drupal 7 blog_post content type, and not all the
+  // fields defined on our Drupal 7 site. So for each row in the Drupal 7 fields
+  // list we compare it against a static list and tell the Migrate API to skip
+  // any that are not in our list.
+  if ($migration->id() == 'dmeblog_d7_field' || $migration->id() == 'dmeblog_d7_field_instance') {
+    // Drupal 7 field names for all the fields we know we DO want to migrate.
+    $blog_fields = [
+      'field_blog_post_images',
+      'field_blog_post_files',
+      'field_planet',
+      'taxonomy_blog_tags',
+    ];
+
+    // The `field_name` property here comes from the source plugin which defines
+    // the list of source fields.
+    // @see \Drupal\field\Plugin\migrate\source\d7\Field::fields()
+    if (!in_array($row->getSourceProperty('field_name'), $blog_fields)) {
+      // Skip this row by throwing a new MigrateSkipRowException exception.
+      // Using FALSE here also instructs the Migrate API to forgo creating an
+      // entry in the map table for this particular record instead of marking
+      // it as ignored. Either would work in this case, this method works for us
+      // since don't really need to record that it was STATUS_IGNORED for any
+      // reason.
+      throw new MigrateSkipRowException('', TRUE);
+    }
+  }
+}
+
+/**
+ * Implements hook_migrate_MIGRATION_ID_prepare_row().
+ *
+ * The migration we're processing in this place is "dmeblog_d7_node_type".
+ */
+function dmeblog_migrate_migrate_dmeblog_d7_node_type_prepare_row(Row $row, MigrateSourceInterface $source, MigrationInterface $migration) {
+  // Skip all node types that are no in our list.
+  $node_types = ['blog_post'];
+  if (!in_array($row->getSourceProperty('type'), $node_types)) {
+    throw new MigrateSkipRowException('', TRUE);
+  }
+}

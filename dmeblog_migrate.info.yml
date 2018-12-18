@@ -1,0 +1,7 @@
+name: dmeblog_migrate
+type: module
+description: Migrate Drupalize.Me Blog and Users to Drupal 8
+core: 8.x
+package: Custom
+dependencies:
+  - migrate_plus

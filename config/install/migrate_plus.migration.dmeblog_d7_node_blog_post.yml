@@ -1,0 +1,60 @@
+langcode: en
+status: true
+dependencies: {  }
+id: dmeblog_d7_node_blog_post
+migration_tags:
+  - 'Drupal 7'
+migration_group: dmeblog_migrate
+label: 'Nodes (Blog post)'
+source:
+  plugin: d7_node
+  node_type: blog_post
+process:
+  nid: nid
+  vid: vid
+  type: type
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: und
+  title: title
+  uid: node_uid
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  revision_uid: revision_uid
+  revision_log: log
+  revision_timestamp: timestamp
+  body: body
+  field_blog_post_files:
+    plugin: iterator
+    source: field_blog_post_files
+    process:
+      target_id: fid
+      display: display
+      description: description
+  field_blog_post_images:
+    plugin: iterator
+    source: field_blog_post_images
+    process:
+      target_id: fid
+      alt: alt
+      title: title
+      width: width
+      height: height
+  field_blog_post_promote: field_blog_post_promote
+  field_planet: field_planet
+  taxonomy_blog_tags:
+    plugin: iterator
+    source: taxonomy_blog_tags
+    process:
+      target_id: tid
+destination:
+  plugin: 'entity:node'
+migration_dependencies:
+  required:
+    - dmeblog_d7_node_type
+  optional:
+    - dmeblog_d7_field_instance
