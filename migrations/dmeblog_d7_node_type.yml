@@ -1,8 +1,6 @@
-langcode: en
-status: true
-dependencies: {  }
 id: dmeblog_d7_node_type
 migration_tags:
+  - 'Configuration'
   - 'Drupal 7'
 migration_group: dmeblog_migrate
 label: 'Node type configuration'

@@ -1,8 +1,6 @@
-langcode: en
-status: true
-dependencies: {  }
 id: dmeblog_d7_user_role
 migration_tags:
+  - 'Configuration'
   - 'Drupal 7'
 migration_group: dmeblog_migrate
 label: 'User roles'

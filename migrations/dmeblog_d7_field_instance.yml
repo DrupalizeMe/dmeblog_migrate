@@ -1,8 +1,6 @@
-langcode: en
-status: true
-dependencies: {  }
 id: dmeblog_d7_field_instance
 migration_tags:
+  - 'Configuration'
   - 'Drupal 7'
 migration_group: dmeblog_migrate
 label: 'Field instance configuration'
